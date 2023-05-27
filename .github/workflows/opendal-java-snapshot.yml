@@ -45,8 +45,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          repository: tisonkun/opendal
-          ref: try-github-packages
+          repository: apache/incubator-opendal
       - name: Set up JDK 8
         uses: actions/setup-java@v3
         with:
@@ -72,8 +71,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          repository: tisonkun/opendal
-          ref: try-github-packages
+          repository: apache/incubator-opendal
       - name: Set up JDK 8
         uses: actions/setup-java@v3
         with:
