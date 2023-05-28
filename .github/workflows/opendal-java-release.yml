@@ -88,6 +88,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           repository: apache/incubator-opendal
+          ref: ${{ inputs.ref }}
       - name: Set up JDK 8
         uses: actions/setup-java@v3
         with:
@@ -124,7 +125,11 @@ jobs:
           name: osx-aarch_64-local-staging
           path: ~/osx-aarch_64-local-staging
 
+      - uses: actions/checkout@v3
+        with:
+          path: ci-opendal
       - name: Merge staging repositories
+        working-directory: ci-opendal
         run: bash ./scripts/merge_local_staging.sh $LOCAL_STAGING_DIR/staging ~/windows-x86_64-local-staging/staging ~/linux-x86_64-local-staging/staging ~/osx-x86_64-local-staging/staging ~/osx-aarch_64-local-staging/staging
 
       - name: Deploy local staged artifacts
