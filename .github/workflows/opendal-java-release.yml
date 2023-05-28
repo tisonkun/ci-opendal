@@ -18,6 +18,9 @@
 name: Release OpenDAL Java
 
 on:
+  push:
+    branches:
+      - try-release
   workflow_dispatch:
     inputs:
       version:
@@ -47,7 +50,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           repository: apache/incubator-opendal
-          ref: ${{ inputs.ref }}
+          ref: ${{ inputs.ref || 'main' }}
       - name: Set up JDK 8
         uses: actions/setup-java@v3
         with:
@@ -65,7 +68,7 @@ jobs:
       - name: Local staging
         working-directory: bindings/java
         run: |
-          mvn org.codehaus.mojo:versions-maven-plugin:set -DnewVersion=${{ inputs.version }}
+          mvn org.codehaus.mojo:versions-maven-plugin:set -DnewVersion=${{ inputs.version || '0.1.0'  }}
           mvn -Papache-release package verify org.sonatype.plugins:nexus-staging-maven-plugin:deploy -DjniClassifier=${{ matrix.classifier }} -DskipTests=true -DaltStagingDirectory=local-staging -DskipRemoteStaging=true "-DserverId=apache.releases.https" "-DnexusUrl=https://repository.apache.org"
         env:
           MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
@@ -85,7 +88,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           repository: apache/incubator-opendal
-          ref: ${{ inputs.ref }}
+          ref: ${{ inputs.ref || 'main' }}
       - name: Set up JDK 8
         uses: actions/setup-java@v3
         with:
@@ -133,7 +136,7 @@ jobs:
         if: ${{ github.event_name != 'pull_request' }}
         working-directory: bindings/java
         run: |
-          mvn org.codehaus.mojo:versions-maven-plugin:set -DnewVersion=${{ inputs.version  }}
+          mvn org.codehaus.mojo:versions-maven-plugin:set -DnewVersion=${{ inputs.version || '0.1.0'  }}
           mvn org.sonatype.plugins:nexus-staging-maven-plugin:deploy-staged -DaltStagingDirectory=$LOCAL_STAGING_DIR -DskipStagingRepositoryClose=true "-DserverId=apache.releases.https" "-DnexusUrl=https://repository.apache.org"
         env:
           MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
