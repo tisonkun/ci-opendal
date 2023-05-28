@@ -2,4 +2,5 @@
 
 Read the main repo at https://github.com/apache/incubator-opendal.
 
-1. [Deploy OpenDAL Java Snapshot to ASF repository](.github/workflows/opendal-java-snapshot.yml)
+* [Deploy OpenDAL Java Snapshot to ASF repository](.github/workflows/opendal-java-snapshot.yml)
+* [Release formal OpenDAL Java to ASF repository](.github/workflows/opendal-java-release.yml)
