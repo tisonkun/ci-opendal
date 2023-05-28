@@ -125,16 +125,8 @@ jobs:
           path: ~/osx-aarch_64-local-staging
 
       - name: Merge staging repositories
-        run: |
-          mkdir -p ~/local-staging/deferred
-          cat ~/windows-x86_64-local-staging/deferred/.index >>  ~/local-staging/deferred/.index
-          cp -r ~/windows-x86_64-local-staging/deferred/* ~/local-staging/deferred/
-          cat ~/linux-x86_64-local-staging/deferred/.index >>  ~/local-staging/deferred/.index
-          cp -r ~/linux-x86_64-local-staging/deferred/* ~/local-staging/deferred/
-          cat ~/osx-x86_64-local-staging/deferred/.index >>  ~/local-staging/deferred/.index
-          cp -r ~/osx-x86_64-local-staging/deferred/* ~/local-staging/deferred/
-          cat ~/osx-aarch_64-local-staging/deferred/.index >>  ~/local-staging/deferred/.index
-          cp -r ~/osx-aarch_64-local-staging/deferred/* ~/local-staging/deferred/
+        working-directory: ./prepare-release-workspace/
+        run: bash ./.github/scripts/merge_local_staging.sh $LOCAL_STAGING_DIR/staging ~/windows-x86_64-local-staging/staging ~/linux-x86_64-local-staging/staging ~/osx-x86_64-local-staging/staging ~/osx-aarch_64-local-staging/staging
 
       - name: Deploy local staged artifacts
         if: ${{ github.event_name != 'pull_request' }}
